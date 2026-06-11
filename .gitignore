@@ -1,1 +1,15 @@
-.venv
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+.env
+static/css/output.css
+staticfiles/
+media/
+node_modules/
+*.egg-info/
+dist/
+build/
+.DS_Store

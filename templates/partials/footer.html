@@ -1,0 +1,72 @@
+{% load static %}
+<footer class="bg-brand-navy text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+      <!-- Brand column -->
+      <div>
+        <p class="text-xl font-bold mb-1">Growth<span class="text-brand-red">Master</span></p>
+        <p class="text-brand-cream font-semibold text-sm mb-3">Solutions Consultancy</p>
+        <p class="text-brand-muted text-sm leading-relaxed">
+          {{ site_settings.footer_text|default:"Empowering Business Success — Strategy, Projects, Research & Funding." }}
+        </p>
+        <!-- Social icons -->
+        <div class="flex gap-4 mt-4">
+          {% if site_settings.linkedin_url %}
+            <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-brand-muted hover:text-brand-red transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          {% endif %}
+          {% if site_settings.facebook_url %}
+            <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook" class="text-brand-muted hover:text-brand-red transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+          {% endif %}
+          {% if site_settings.instagram_url %}
+            <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram" class="text-brand-muted hover:text-brand-red transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="white" stroke-width="1.5"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          {% endif %}
+          {% if site_settings.twitter_url %}
+            <a href="{{ site_settings.twitter_url }}" target="_blank" rel="noopener" aria-label="X / Twitter" class="text-brand-muted hover:text-brand-red transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div>
+        <h4 class="text-brand-cream font-semibold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="{% url 'home' %}" class="text-brand-muted hover:text-white transition-colors">Home</a></li>
+          <li><a href="{% url 'about' %}" class="text-brand-muted hover:text-white transition-colors">About Us</a></li>
+          <li><a href="{% url 'services_list' %}" class="text-brand-muted hover:text-white transition-colors">Our Services</a></li>
+          <li><a href="{% url 'portfolio' %}" class="text-brand-muted hover:text-white transition-colors">Portfolio</a></li>
+          <li><a href="{% url 'contact' %}" class="text-brand-muted hover:text-white transition-colors">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Subscribe + contact -->
+      <div>
+        <h4 class="text-brand-cream font-semibold text-sm uppercase tracking-wider mb-4">Stay Connected</h4>
+        <div id="subscribe-footer">
+          {% include "subscribers/partials/subscribe_form.html" with source="footer_form" %}
+        </div>
+        <div class="mt-6 space-y-2 text-sm text-brand-muted">
+          {% if site_settings.contact_email %}
+            <p><a href="mailto:{{ site_settings.contact_email }}" class="hover:text-white transition-colors">{{ site_settings.contact_email }}</a></p>
+          {% endif %}
+          {% if site_settings.whatsapp_number %}
+            <p><a href="https://wa.me/{{ site_settings.whatsapp_number|cut:'+' }}" target="_blank" class="hover:text-white transition-colors">WhatsApp: {{ site_settings.whatsapp_number }}</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-brand-muted">
+      <p>&copy; {% now "Y" %} GrowthMaster Solutions Consultancy. All rights reserved.</p>
+      <p>Empowering Business Success</p>
+    </div>
+  </div>
+</footer>
