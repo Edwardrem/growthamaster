@@ -1,0 +1,59 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Subscribers — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-brand-navy">Subscribers</h1>
+    <p class="text-brand-muted text-sm mt-0.5">{{ total_active }} active subscriber{{ total_active|pluralize }}</p>
+  </div>
+  <a href="{% url 'manage_subscribers_export' %}" class="btn-secondary text-sm">Export CSV</a>
+</div>
+
+<!-- Filters -->
+<form method="get" class="bg-white rounded-xl shadow-sm p-4 mb-4 flex gap-3 flex-wrap">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search email or name…" class="input-field max-w-xs text-sm" />
+  <select name="status" class="input-field max-w-[160px] text-sm">
+    <option value="">All statuses</option>
+    <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+    <option value="unsubscribed" {% if status == 'unsubscribed' %}selected{% endif %}>Unsubscribed</option>
+  </select>
+  <button type="submit" class="btn-primary text-sm">Filter</button>
+</form>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-brand-offwhite border-b">
+      <tr>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Email</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Name</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Source</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Status</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Subscribed</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Action</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100" id="subscriber-list">
+      {% for sub in page_obj %}
+      {% include "manage_portal/partials/subscriber_row.html" %}
+      {% empty %}
+      <tr><td colspan="6" class="text-center py-12 text-brand-muted">No subscribers found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+<div class="flex gap-2 mt-4 justify-center text-sm">
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&status={{ status }}" class="btn-secondary px-3 py-1">← Prev</a>
+  {% endif %}
+  <span class="px-3 py-1 text-brand-muted">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&status={{ status }}" class="btn-secondary px-3 py-1">Next →</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

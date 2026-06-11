@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Our Services — GrowthMaster Solutions Consultancy{% endblock %}
+{% block meta_description %}Explore GrowthMaster's full range of consultancy services across Strategy & Investment, Projects & Feasibility, and Research & Funding.{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<section class="bg-brand-navy py-16 text-center relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#F35236 1px, transparent 1px); background-size: 24px 24px;"></div>
+  <div class="relative max-w-3xl mx-auto px-4">
+    <p class="text-brand-red font-semibold text-sm uppercase tracking-widest mb-2">What We Offer</p>
+    <h1 class="text-4xl font-extrabold text-white mb-4">Our Services</h1>
+    <p class="text-brand-cream text-lg">Comprehensive consultancy services across three core disciplines — delivered with expertise and commitment to results.</p>
+  </div>
+</section>
+
+<!-- Category tabs -->
+<section class="bg-white border-b border-gray-200 sticky top-16 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex gap-1 overflow-x-auto scrollbar-hide py-3">
+      {% for cat in categories %}
+      <button
+        hx-get="{% url 'services_by_category' cat.slug %}"
+        hx-target="#service-list"
+        hx-swap="innerHTML"
+        hx-push-url="false"
+        class="flex-shrink-0 px-5 py-2 rounded-full text-sm font-semibold transition-colors
+               {% if active_cat.slug == cat.slug %}bg-brand-red text-white{% else %}text-brand-navy hover:bg-brand-cream{% endif %}"
+        onclick="setActiveTab(this)"
+      >
+        {{ cat.name }}
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Service list (HTMX target) -->
+<section class="section-offwhite" id="service-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="service-list">
+      {% if active_cat %}
+        {% include "services/partials/category_tab.html" with category=active_cat services=active_cat.services.all %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function setActiveTab(btn) {
+  document.querySelectorAll('[hx-get]').forEach(b => {
+    b.classList.remove('bg-brand-red', 'text-white');
+    b.classList.add('text-brand-navy', 'hover:bg-brand-cream');
+  });
+  btn.classList.add('bg-brand-red', 'text-white');
+  btn.classList.remove('text-brand-navy', 'hover:bg-brand-cream');
+}
+</script>
+{% endblock %}

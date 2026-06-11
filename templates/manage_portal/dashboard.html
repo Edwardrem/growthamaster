@@ -1,0 +1,88 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Dashboard — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<h1 class="text-2xl font-bold text-brand-navy mb-6">Dashboard</h1>
+
+<!-- Summary cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div class="bg-white rounded-xl p-5 shadow-sm">
+    <p class="text-brand-muted text-xs uppercase tracking-wide mb-1">Active Subscribers</p>
+    <p class="text-3xl font-extrabold text-brand-navy">{{ total_subscribers }}</p>
+  </div>
+  <div class="bg-white rounded-xl p-5 shadow-sm">
+    <p class="text-brand-muted text-xs uppercase tracking-wide mb-1">New Enquiries Today</p>
+    <p class="text-3xl font-extrabold text-brand-red">{{ new_enquiries_today }}</p>
+  </div>
+  <div class="bg-white rounded-xl p-5 shadow-sm">
+    <p class="text-brand-muted text-xs uppercase tracking-wide mb-1">Campaigns This Month</p>
+    <p class="text-3xl font-extrabold text-brand-navy">{{ campaigns_this_month }}</p>
+  </div>
+  <div class="bg-white rounded-xl p-5 shadow-sm">
+    <p class="text-brand-muted text-xs uppercase tracking-wide mb-1">Portfolio Items</p>
+    <p class="text-3xl font-extrabold text-brand-navy">{{ portfolio_items }}</p>
+  </div>
+</div>
+
+<!-- Quick actions -->
+<div class="flex flex-wrap gap-3 mb-8">
+  <a href="{% url 'manage_portfolio_add' %}" class="btn-primary text-sm">+ Add Portfolio Item</a>
+  <a href="{% url 'manage_email_compose' %}" class="btn-secondary text-sm">Compose Email</a>
+  <a href="{% url 'manage_enquiries' %}" class="btn-secondary text-sm">View Enquiries</a>
+</div>
+
+<!-- Recent activity (HTMX auto-refresh) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+     hx-get="{% url 'manage_dashboard' %}"
+     hx-trigger="load, every 120s"
+     hx-select="#activity-feed"
+     hx-swap="innerHTML"
+     hx-target="#activity-feed">
+  <div id="activity-feed">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h2 class="font-bold text-brand-navy mb-4">Recent Enquiries</h2>
+      <div class="space-y-3">
+        {% for e in recent_enquiries %}
+        <div class="flex items-start justify-between py-2 border-b border-gray-100 last:border-0">
+          <div>
+            <p class="font-semibold text-brand-navy text-sm">{{ e.name }}</p>
+            <p class="text-brand-muted text-xs">{{ e.email }} — {{ e.created_at|date:"d M Y" }}</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full
+            {% if e.status == 'new' %}bg-brand-red/10 text-brand-red
+            {% elif e.status == 'read' %}bg-blue-100 text-blue-700
+            {% elif e.status == 'replied' %}bg-green-100 text-green-700
+            {% else %}bg-gray-100 text-gray-500{% endif %}">
+            {{ e.get_status_display }}
+          </span>
+        </div>
+        {% empty %}
+        <p class="text-brand-muted text-sm">No enquiries yet.</p>
+        {% endfor %}
+      </div>
+      {% if recent_enquiries %}
+      <a href="{% url 'manage_enquiries' %}" class="text-brand-red text-sm font-semibold mt-3 inline-block">View all →</a>
+      {% endif %}
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h2 class="font-bold text-brand-navy mb-4">Recent Campaigns</h2>
+      <div class="space-y-3">
+        {% for c in recent_campaigns %}
+        <div class="py-2 border-b border-gray-100 last:border-0">
+          <p class="font-semibold text-brand-navy text-sm">{{ c.subject }}</p>
+          <p class="text-brand-muted text-xs">
+            {{ c.get_status_display }} •
+            {% if c.sent_at %}{{ c.sent_at|date:"d M Y" }}{% else %}Draft{% endif %} •
+            {{ c.recipient_count }} recipients
+          </p>
+        </div>
+        {% empty %}
+        <p class="text-brand-muted text-sm">No campaigns sent yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

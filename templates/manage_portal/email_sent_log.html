@@ -1,0 +1,50 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Email Sent Log — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-brand-navy">Email Campaigns</h1>
+  <div class="flex gap-3">
+    <a href="{% url 'manage_email_analytics' %}" class="btn-secondary text-sm">Analytics</a>
+    <a href="{% url 'manage_email_compose' %}" class="btn-primary text-sm">+ Compose</a>
+  </div>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-brand-offwhite border-b">
+      <tr>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Subject</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Status</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Recipients</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Opens</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Clicks</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Sent</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for c in campaigns %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-medium text-brand-navy">{{ c.subject }}</td>
+        <td class="px-4 py-3">
+          <span class="text-xs px-2 py-0.5 rounded-full
+            {% if c.status == 'sent' %}bg-green-100 text-green-700
+            {% elif c.status == 'sending' %}bg-blue-100 text-blue-700
+            {% elif c.status == 'failed' %}bg-red-100 text-red-700
+            {% else %}bg-gray-100 text-gray-500{% endif %}">
+            {{ c.get_status_display }}
+          </span>
+        </td>
+        <td class="px-4 py-3 text-brand-muted">{{ c.recipient_count }}</td>
+        <td class="px-4 py-3 text-brand-muted">{{ c.open_count }} ({{ c.open_rate }}%)</td>
+        <td class="px-4 py-3 text-brand-muted">{{ c.click_count }} ({{ c.click_rate }}%)</td>
+        <td class="px-4 py-3 text-brand-muted text-xs">{{ c.sent_at|date:"d M Y H:i"|default:"—" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center py-12 text-brand-muted">No campaigns yet. <a href="{% url 'manage_email_compose' %}" class="text-brand-red">Compose one →</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

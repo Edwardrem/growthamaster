@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us — GrowthMaster Solutions Consultancy{% endblock %}
+{% block meta_description %}Learn about GrowthMaster Solutions Consultancy — our story, mission, values, and the team behind Zimbabwe's trusted business consultancy.{% endblock %}
+
+{% block content %}
+
+<!-- Page header -->
+<section class="bg-brand-navy py-16 text-center relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#F35236 1px, transparent 1px); background-size: 24px 24px;"></div>
+  <div class="relative max-w-3xl mx-auto px-4">
+    <p class="text-brand-red font-semibold text-sm uppercase tracking-widest mb-2">Who We Are</p>
+    <h1 class="text-4xl font-extrabold text-white mb-4">About GrowthMaster</h1>
+    <p class="text-brand-cream text-lg">Empowering Business Success — strategy, projects, research and funding for organisations across Zimbabwe and the region.</p>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="bg-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div>
+        <h2 class="text-2xl font-bold text-brand-navy mb-4">Our Story</h2>
+        <div class="prose prose-slate max-w-none text-gray-600 leading-relaxed space-y-4">
+          {% if site_settings.about_body %}
+            {{ site_settings.about_body|linebreaks }}
+          {% else %}
+            <p>GrowthMaster Solutions Consultancy was founded with a clear purpose: to bridge the gap between business ambition and practical execution for SMEs, NGOs, trusts, and investors operating in Zimbabwe and the broader region.</p>
+            <p>We believe that every organisation — regardless of size or sector — deserves access to high-quality strategic advice and implementation support. Our multidisciplinary team brings together expertise in business strategy, project management, research, and development finance.</p>
+            <p>Over the years, we have supported hundreds of clients in registering businesses, developing strategies, securing funding, and measuring impact. Our approach is hands-on, results-oriented, and deeply rooted in the realities of the Zimbabwean business environment.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="card-cream border-l-4 border-brand-red">
+          <h3 class="font-bold text-brand-navy text-lg mb-2">Our Mission</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">To provide professional, accessible, and results-driven consultancy services that empower businesses, NGOs, and investors to achieve sustainable growth and lasting impact.</p>
+        </div>
+        <div class="card-cream border-l-4 border-brand-red">
+          <h3 class="font-bold text-brand-navy text-lg mb-2">Our Vision</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">To be the most trusted business consultancy firm in Zimbabwe and the region — recognised for our integrity, expertise, and measurable client outcomes.</p>
+        </div>
+        <div class="card-cream border-l-4 border-brand-red">
+          <h3 class="font-bold text-brand-navy text-lg mb-2">Our Values</h3>
+          <ul class="text-gray-600 text-sm space-y-1">
+            <li>✦ Integrity — honest, transparent, and ethical in all engagements</li>
+            <li>✦ Excellence — rigorous standards in every deliverable</li>
+            <li>✦ Partnership — collaborative approach, your success is our success</li>
+            <li>✦ Impact — focused on measurable, lasting outcomes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Target market -->
+<section class="section-offwhite">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-brand-navy mb-2">Who We Serve</h2>
+      <p class="text-brand-muted">Our services are designed for organisations at every stage of growth.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div class="bg-white rounded-xl p-5 text-center shadow-sm"><p class="text-2xl mb-2">🏢</p><p class="font-semibold text-brand-navy text-sm">SMEs</p></div>
+      <div class="bg-white rounded-xl p-5 text-center shadow-sm"><p class="text-2xl mb-2">🌍</p><p class="font-semibold text-brand-navy text-sm">NGOs</p></div>
+      <div class="bg-white rounded-xl p-5 text-center shadow-sm"><p class="text-2xl mb-2">🤝</p><p class="font-semibold text-brand-navy text-sm">Trusts</p></div>
+      <div class="bg-white rounded-xl p-5 text-center shadow-sm"><p class="text-2xl mb-2">📈</p><p class="font-semibold text-brand-navy text-sm">Investors</p></div>
+      <div class="bg-white rounded-xl p-5 text-center shadow-sm"><p class="text-2xl mb-2">💡</p><p class="font-semibold text-brand-navy text-sm">Entrepreneurs</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-navy text-center">
+  <div class="max-w-2xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-3">Let's Work Together</h2>
+    <p class="text-brand-cream mb-6">Ready to take your organisation to the next level? Reach out for a free initial consultation.</p>
+    <a href="{% url 'contact' %}" class="btn-primary px-8 py-3">Contact Us</a>
+  </div>
+</section>
+
+{% endblock %}

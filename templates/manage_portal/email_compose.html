@@ -1,0 +1,42 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Compose Email — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<h1 class="text-2xl font-bold text-brand-navy mb-6">Compose Email Broadcast</h1>
+
+{% if error %}
+<div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm mb-4">{{ error }}</div>
+{% endif %}
+
+<div class="bg-white rounded-xl shadow-sm p-8 max-w-3xl">
+  <form method="post" class="space-y-5">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm font-semibold text-brand-navy mb-1">Subject Line *</label>
+      <input type="text" name="subject" value="{{ subject|default:'' }}" required class="input-field" placeholder="e.g. June Newsletter from GrowthMaster" />
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-brand-navy mb-1">Preview Text</label>
+      <input type="text" name="preview_text" value="{{ preview_text|default:'' }}" class="input-field" placeholder="Short preview shown in email clients…" />
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-brand-navy mb-1">Email Body (HTML) *</label>
+      <textarea name="html_body" rows="16" required class="input-field font-mono text-xs"
+                placeholder="Paste or write HTML content here. HTMX tracking links and unsubscribe links are injected automatically.">{{ html_body|default:'' }}</textarea>
+    </div>
+    <div class="bg-brand-cream rounded-lg p-4 text-xs text-brand-navy space-y-1">
+      <p><strong>Note:</strong> This email will be sent to <strong>all active subscribers</strong> immediately on clicking Send.</p>
+      <p>Open tracking (1×1 pixel) and link click tracking are injected automatically.</p>
+      <p>An unsubscribe link is appended to every email.</p>
+    </div>
+    <div class="flex gap-3">
+      <button type="submit" class="btn-primary"
+              onclick="return confirm('Send this email to all active subscribers now?')">
+        Send Broadcast
+      </button>
+      <a href="{% url 'manage_email_sent' %}" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

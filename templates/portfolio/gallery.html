@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Portfolio — GrowthMaster Solutions Consultancy{% endblock %}
+{% block meta_description %}View GrowthMaster's portfolio of videos, photos, and social media — showcasing our work and client success stories.{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<section class="bg-brand-navy py-16 text-center relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#F35236 1px, transparent 1px); background-size: 24px 24px;"></div>
+  <div class="relative max-w-3xl mx-auto px-4">
+    <p class="text-brand-red font-semibold text-sm uppercase tracking-widest mb-2">Our Work</p>
+    <h1 class="text-4xl font-extrabold text-white mb-4">Portfolio</h1>
+    <p class="text-brand-cream text-lg">Videos, photos, and highlights from our client engagements and events.</p>
+  </div>
+</section>
+
+<!-- Filters -->
+<section class="bg-white border-b border-gray-200 sticky top-16 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <div class="flex gap-2 overflow-x-auto">
+      <button hx-get="{% url 'portfolio_filter' %}" hx-target="#portfolio-grid" hx-swap="innerHTML"
+              class="filter-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold bg-brand-red text-white">
+        All
+      </button>
+      <button hx-get="{% url 'portfolio_filter' %}?type=video" hx-target="#portfolio-grid" hx-swap="innerHTML"
+              class="filter-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-brand-navy hover:bg-brand-cream transition-colors">
+        Videos
+      </button>
+      <button hx-get="{% url 'portfolio_filter' %}?type=photo" hx-target="#portfolio-grid" hx-swap="innerHTML"
+              class="filter-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-brand-navy hover:bg-brand-cream transition-colors">
+        Photos
+      </button>
+      <button hx-get="{% url 'portfolio_filter' %}?type=social" hx-target="#portfolio-grid" hx-swap="innerHTML"
+              class="filter-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-brand-navy hover:bg-brand-cream transition-colors">
+        Social Media
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Grid -->
+<section class="section-offwhite">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="portfolio-grid">
+      {% include "portfolio/partials/filter_results.html" %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('htmx:beforeRequest', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('bg-brand-red', 'text-white');
+      b.classList.add('text-brand-navy', 'hover:bg-brand-cream');
+    });
+    this.classList.add('bg-brand-red', 'text-white');
+    this.classList.remove('text-brand-navy', 'hover:bg-brand-cream');
+  });
+});
+</script>
+{% endblock %}

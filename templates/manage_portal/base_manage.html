@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex min-h-screen bg-gray-100">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-brand-navy flex-shrink-0 hidden lg:flex flex-col">
+    <div class="px-6 py-5 border-b border-white/10">
+      <p class="text-white font-bold text-sm">Growth<span class="text-brand-red">Master</span> Portal</p>
+      <p class="text-brand-muted text-xs mt-0.5">{{ request.user.get_full_name|default:request.user.username }}</p>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-1 text-sm">
+      {% with name=request.resolver_match.url_name %}
+      <a href="{% url 'manage_dashboard' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if name == 'manage_dashboard' %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/></svg>
+        Dashboard
+      </a>
+      <a href="{% url 'manage_enquiries' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if 'enquir' in name %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        Enquiries
+      </a>
+      <a href="{% url 'manage_portfolio' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if 'portfolio' in name %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Portfolio
+      </a>
+      <a href="{% url 'manage_subscribers' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if 'subscriber' in name %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Subscribers
+      </a>
+      <a href="{% url 'manage_email_compose' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if 'email' in name %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Email Broadcast
+      </a>
+      <a href="{% url 'manage_settings' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {% if name == 'manage_settings' %}bg-brand-red text-white{% else %}text-brand-muted hover:text-white hover:bg-white/10{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Site Settings
+      </a>
+      {% endwith %}
+    </nav>
+    <div class="px-4 py-4 border-t border-white/10">
+      <a href="{% url 'home' %}" class="text-brand-muted hover:text-white text-xs transition-colors block mb-2">← View Public Site</a>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button class="text-brand-muted hover:text-brand-red text-xs transition-colors">Sign Out</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 overflow-y-auto">
+    <div class="p-6 lg:p-8">
+      {% block manage_content %}{% endblock %}
+    </div>
+  </main>
+</div>
+{% endblock %}

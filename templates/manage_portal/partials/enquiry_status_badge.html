@@ -1,0 +1,20 @@
+<div class="flex items-center gap-2">
+  <span class="text-xs px-2 py-0.5 rounded-full
+    {% if enquiry.status == 'new' %}bg-brand-red/10 text-brand-red
+    {% elif enquiry.status == 'read' %}bg-blue-100 text-blue-700
+    {% elif enquiry.status == 'replied' %}bg-green-100 text-green-700
+    {% else %}bg-gray-100 text-gray-500{% endif %}">
+    {{ enquiry.get_status_display }}
+  </span>
+  <form method="post" action="{% url 'manage_enquiry_status' enquiry.pk %}"
+        hx-post="{% url 'manage_enquiry_status' enquiry.pk %}"
+        hx-target="#status-{{ enquiry.pk }}"
+        hx-swap="innerHTML">
+    {% csrf_token %}
+    <select name="status" onchange="this.form.requestSubmit()" class="text-xs border border-gray-200 rounded px-1 py-0.5 text-brand-muted">
+      {% for value, label in enquiry.Status.choices %}
+      <option value="{{ value }}" {% if enquiry.status == value %}selected{% endif %}>→ {{ label }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>

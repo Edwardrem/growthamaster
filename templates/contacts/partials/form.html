@@ -1,0 +1,47 @@
+<div class="bg-white rounded-xl shadow-sm p-8">
+  <h2 class="text-2xl font-bold text-brand-navy mb-6">Send Us a Message</h2>
+  <form hx-post="{% url 'contact_submit' %}"
+        hx-target="#contact-form-wrapper"
+        hx-swap="innerHTML"
+        class="space-y-5">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">Full Name *</label>
+        {{ form.name }}
+        {% if form.name.errors %}<p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>{% endif %}
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">Email Address *</label>
+        {{ form.email }}
+        {% if form.email.errors %}<p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">Phone Number</label>
+        {{ form.phone }}
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">Service of Interest</label>
+        {{ form.service }}
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-brand-navy mb-1">Message *</label>
+      {{ form.message }}
+      {% if form.message.errors %}<p class="mt-1 text-sm text-red-600">{{ form.message.errors.0 }}</p>{% endif %}
+    </div>
+    <button type="submit"
+            class="btn-primary w-full py-3 text-base flex items-center justify-center gap-2"
+            hx-indicator="#submit-spinner">
+      <span id="submit-spinner" class="htmx-indicator">
+        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+      </span>
+      Send Message
+    </button>
+  </form>
+</div>

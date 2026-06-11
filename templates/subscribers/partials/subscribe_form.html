@@ -1,0 +1,21 @@
+<form hx-post="{% url 'subscribe' %}"
+      hx-target="#subscribe-{% if source %}{{ source }}{% else %}footer{% endif %}"
+      hx-swap="innerHTML"
+      class="space-y-3">
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ source|default:'footer_form' }}" />
+  <input type="text" name="first_name" placeholder="First name"
+         class="w-full bg-white/10 border border-white/20 rounded-md px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:border-brand-red" />
+  <div class="flex gap-2">
+    <input type="email" name="email" placeholder="Your email address" required
+           class="flex-1 bg-white/10 border border-white/20 rounded-md px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:border-brand-red" />
+    <button type="submit" class="flex-shrink-0 bg-brand-red hover:bg-brand-darkred text-white text-sm font-semibold px-4 py-2 rounded-md transition-colors">
+      Subscribe
+    </button>
+  </div>
+  {% if form %}
+    {% for error in form.email.errors %}
+      <p class="text-red-400 text-xs">{{ error }}</p>
+    {% endfor %}
+  {% endif %}
+</form>

@@ -1,0 +1,53 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Email Analytics — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-brand-navy">Email Analytics</h1>
+  <a href="{% url 'manage_email_compose' %}" class="btn-primary text-sm">+ Compose</a>
+</div>
+
+<div class="space-y-4"
+     hx-get="{% url 'manage_email_analytics' %}"
+     hx-trigger="every 60s"
+     hx-select="#analytics-table"
+     hx-target="#analytics-table"
+     hx-swap="innerHTML">
+  <div id="analytics-table">
+    {% for c in campaigns %}
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h2 class="font-bold text-brand-navy">{{ c.subject }}</h2>
+          <p class="text-brand-muted text-xs mt-0.5">Sent {{ c.sent_at|date:"d M Y H:i" }} · {{ c.recipient_count }} recipients</p>
+        </div>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Sent</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="text-center bg-brand-offwhite rounded-lg p-4">
+          <p class="text-2xl font-bold text-brand-navy">{{ c.open_rate }}%</p>
+          <p class="text-brand-muted text-xs mt-1">Open Rate</p>
+          <p class="text-brand-muted text-xs">{{ c.open_count }} opens</p>
+        </div>
+        <div class="text-center bg-brand-offwhite rounded-lg p-4">
+          <p class="text-2xl font-bold text-brand-navy">{{ c.click_rate }}%</p>
+          <p class="text-brand-muted text-xs mt-1">Click Rate</p>
+          <p class="text-brand-muted text-xs">{{ c.click_count }} clicks</p>
+        </div>
+        <div class="text-center bg-brand-offwhite rounded-lg p-4">
+          <p class="text-2xl font-bold text-brand-navy">{{ c.recipient_count }}</p>
+          <p class="text-brand-muted text-xs mt-1">Delivered</p>
+          <p class="text-brand-muted text-xs">Recipients</p>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="bg-white rounded-xl shadow-sm p-12 text-center text-brand-muted">
+      <p>No sent campaigns to analyse yet.</p>
+      <a href="{% url 'manage_email_compose' %}" class="text-brand-red mt-2 inline-block">Send your first campaign →</a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

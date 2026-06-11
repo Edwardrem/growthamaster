@@ -1,0 +1,24 @@
+<tr class="hover:bg-gray-50" id="sub-{{ sub.pk }}">
+  <td class="px-4 py-3 font-medium text-brand-navy">{{ sub.email }}</td>
+  <td class="px-4 py-3 text-brand-muted">{{ sub.first_name|default:"—" }}</td>
+  <td class="px-4 py-3 text-brand-muted">{{ sub.source|default:"—" }}</td>
+  <td class="px-4 py-3">
+    {% if sub.is_active %}
+      <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span>
+    {% else %}
+      <span class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Unsubscribed</span>
+    {% endif %}
+  </td>
+  <td class="px-4 py-3 text-brand-muted text-xs">{{ sub.subscribed_at|date:"d M Y" }}</td>
+  <td class="px-4 py-3">
+    <form method="post" action="{% url 'manage_subscriber_toggle' sub.pk %}"
+          hx-post="{% url 'manage_subscriber_toggle' sub.pk %}"
+          hx-target="#sub-{{ sub.pk }}"
+          hx-swap="outerHTML">
+      {% csrf_token %}
+      <button type="submit" class="text-xs text-brand-red hover:underline">
+        {% if sub.is_active %}Deactivate{% else %}Reactivate{% endif %}
+      </button>
+    </form>
+  </td>
+</tr>

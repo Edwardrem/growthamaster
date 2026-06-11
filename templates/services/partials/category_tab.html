@@ -1,0 +1,27 @@
+<div>
+  <h2 class="text-2xl font-bold text-brand-navy mb-2">{{ category.name }}</h2>
+  <p class="text-brand-muted mb-8">{{ category.services.count }} specialised service{{ category.services.count|pluralize }}</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for service in services %}
+    <div class="card-cream hover:shadow-md transition-shadow flex flex-col">
+      <div class="w-10 h-10 bg-brand-red/10 rounded-lg flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+      </div>
+      <h3 class="font-bold text-brand-navy mb-2">{{ service.name }}</h3>
+      <p class="text-gray-600 text-sm leading-relaxed flex-1">{{ service.short_desc }}</p>
+      <div class="mt-4 flex gap-3">
+        <a href="{{ service.get_absolute_url }}" class="text-brand-red font-semibold text-sm hover:text-brand-darkred transition-colors">
+          Read More &rarr;
+        </a>
+        <a href="{% url 'contact' %}?service={{ service.slug }}" class="text-brand-muted text-sm hover:text-brand-navy transition-colors ml-auto">
+          Enquire
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-brand-muted col-span-3">No services available in this category yet.</p>
+    {% endfor %}
+  </div>
+</div>

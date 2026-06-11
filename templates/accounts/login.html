@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Login — GrowthMaster{% endblock %}
+
+{% block content %}
+<section class="min-h-[80vh] flex items-center justify-center bg-brand-offwhite py-12 px-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold text-brand-navy">Staff Access</h1>
+      <p class="text-brand-muted text-sm mt-1">GrowthMaster Solutions Consultancy</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-8">
+      {% if form.errors %}
+      <div class="mb-4 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+        Invalid username or password.
+      </div>
+      {% endif %}
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+        <div>
+          <label class="block text-sm font-semibold text-brand-navy mb-1">Username</label>
+          <input type="text" name="username" autofocus autocomplete="username"
+                 class="input-field" placeholder="Enter your username" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-brand-navy mb-1">Password</label>
+          <input type="password" name="password" autocomplete="current-password"
+                 class="input-field" placeholder="Enter your password" />
+        </div>
+        <input type="hidden" name="next" value="{{ next }}" />
+        <button type="submit" class="btn-primary w-full py-3">Sign In</button>
+      </form>
+    </div>
+    <p class="text-center text-brand-muted text-xs mt-6">Staff access only. Not a public page.</p>
+  </div>
+</section>
+{% endblock %}

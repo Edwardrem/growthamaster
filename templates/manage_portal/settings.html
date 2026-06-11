@@ -1,0 +1,73 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Site Settings — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<h1 class="text-2xl font-bold text-brand-navy mb-6">Site Settings</h1>
+
+<div class="bg-white rounded-xl shadow-sm p-8 max-w-2xl">
+  <form method="post" enctype="multipart/form-data" class="space-y-5">
+    {% csrf_token %}
+
+    <h2 class="font-bold text-brand-navy border-b pb-2">Brand</h2>
+    {% for field in form %}
+      {% if field.name in "site_name,tagline,logo,favicon,footer_text" %}
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <h2 class="font-bold text-brand-navy border-b pb-2 pt-2">Hero Section</h2>
+    {% for field in form %}
+      {% if field.name in "hero_heading,hero_subheading" %}
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <h2 class="font-bold text-brand-navy border-b pb-2 pt-2">About</h2>
+    {% for field in form %}
+      {% if field.name == "about_body" %}
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <h2 class="font-bold text-brand-navy border-b pb-2 pt-2">Contact & WhatsApp</h2>
+    {% for field in form %}
+      {% if field.name in "contact_email,phone,physical_address,whatsapp_number" %}
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<p class="text-xs text-brand-muted mt-1">{{ field.help_text }}</p>{% endif %}
+        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <h2 class="font-bold text-brand-navy border-b pb-2 pt-2">Social Media</h2>
+    {% for field in form %}
+      {% if field.name in "linkedin_url,facebook_url,instagram_url,twitter_url" %}
+      <div>
+        <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="pt-2">
+      <button type="submit" class="btn-primary">Save Settings</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

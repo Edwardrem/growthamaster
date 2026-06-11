@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Unsubscribe — GrowthMaster{% endblock %}
+
+{% block content %}
+<section class="section-offwhite min-h-[60vh] flex items-center">
+  <div class="max-w-lg mx-auto px-4 text-center">
+    {% if already_unsubscribed %}
+      <div class="card-cream">
+        <p class="text-4xl mb-4">ℹ️</p>
+        <h1 class="text-2xl font-bold text-brand-navy mb-2">Already Unsubscribed</h1>
+        <p class="text-gray-600">{{ subscriber.email }} is already unsubscribed from our mailing list.</p>
+      </div>
+    {% else %}
+      <div class="card-cream">
+        <div class="w-14 h-14 bg-brand-cream rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-7 h-7 text-brand-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-brand-navy mb-2">Unsubscribed</h1>
+        <p class="text-gray-600 mb-4">You've been removed from the GrowthMaster mailing list. We're sorry to see you go.</p>
+        <p class="text-brand-muted text-sm mb-6">If you change your mind, you can always <a href="{% url 'home' %}#subscribe" class="text-brand-red hover:underline">subscribe again</a>.</p>
+        <a href="{% url 'home' %}" class="btn-primary">Back to Home</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

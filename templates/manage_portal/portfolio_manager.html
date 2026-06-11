@@ -1,0 +1,50 @@
+{% extends "manage_portal/base_manage.html" %}
+
+{% block title %}Portfolio Manager — GrowthMaster Portal{% endblock %}
+
+{% block manage_content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-brand-navy">Portfolio</h1>
+  <a href="{% url 'manage_portfolio_add' %}" class="btn-primary text-sm">+ Add Item</a>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-brand-offwhite border-b">
+      <tr>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Title</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Type</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Category</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Featured</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Active</th>
+        <th class="text-left px-4 py-3 text-brand-muted font-semibold">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for item in items %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-medium text-brand-navy">{{ item.title }}</td>
+        <td class="px-4 py-3 text-brand-muted">{{ item.get_media_type_display }}</td>
+        <td class="px-4 py-3 text-brand-muted">{{ item.get_category_display }}</td>
+        <td class="px-4 py-3">
+          {% if item.is_featured %}<span class="text-brand-red font-semibold">✓</span>{% else %}<span class="text-gray-300">—</span>{% endif %}
+        </td>
+        <td class="px-4 py-3">
+          {% if item.is_active %}<span class="text-green-600 font-semibold">Active</span>{% else %}<span class="text-gray-400">Inactive</span>{% endif %}
+        </td>
+        <td class="px-4 py-3 flex gap-3">
+          <a href="{% url 'manage_portfolio_edit' item.pk %}" class="text-brand-red hover:underline">Edit</a>
+          <form method="post" action="{% url 'manage_portfolio_delete' item.pk %}"
+                onsubmit="return confirm('Delete {{ item.title }}?')">
+            {% csrf_token %}
+            <button type="submit" class="text-gray-400 hover:text-red-600">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center py-12 text-brand-muted">No portfolio items yet. <a href="{% url 'manage_portfolio_add' %}" class="text-brand-red">Add one →</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
