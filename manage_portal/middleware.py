@@ -1,10 +1,12 @@
-from django.http import Http404
+from django.conf import settings
+from django.shortcuts import redirect
 
 
-class ManagePortal404Middleware:
+class ManagePortalLoginMiddleware:
     """
-    Raise Http404 (not 403 or redirect) for any /manage/ request
-    made by an unauthenticated user, so the portal is not advertised.
+    Redirect unauthenticated requests to /manage/* to the login page,
+    preserving the intended destination via ?next= so the user lands
+    back where they wanted after signing in.
     Must appear after AuthenticationMiddleware in MIDDLEWARE.
     """
     def __init__(self, get_response):
@@ -12,5 +14,5 @@ class ManagePortal404Middleware:
 
     def __call__(self, request):
         if request.path.startswith('/manage/') and not request.user.is_authenticated:
-            raise Http404
+            return redirect(f"{settings.LOGIN_URL}?next={request.path}")
         return self.get_response(request)

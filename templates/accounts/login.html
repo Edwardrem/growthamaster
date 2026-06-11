@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Staff Login — GrowthMaster{% endblock %}
 
@@ -6,8 +7,11 @@
 <section class="min-h-[80vh] flex items-center justify-center bg-brand-offwhite py-12 px-4">
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
+      <img src="{% static 'images/growthmaster-logo.jpeg' %}"
+           alt="GrowthMaster Solutions Consultancy"
+           class="mx-auto w-52 rounded-xl shadow-md mb-5" />
       <h1 class="text-2xl font-bold text-brand-navy">Staff Access</h1>
-      <p class="text-brand-muted text-sm mt-1">GrowthMaster Solutions Consultancy</p>
+      <p class="text-brand-muted text-sm mt-1">Sign in to manage your portal</p>
     </div>
     <div class="bg-white rounded-xl shadow-sm p-8">
       {% if form.errors %}

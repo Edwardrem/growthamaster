@@ -42,7 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'manage_portal.middleware.ManagePortal404Middleware',
+    'manage_portal.middleware.ManagePortalLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'growthmaster.urls'
