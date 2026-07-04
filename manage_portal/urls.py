@@ -14,6 +14,7 @@ urlpatterns = [
     path('email/sent/', views.EmailSentLog.as_view(), name='manage_email_sent'),
     path('email/analytics/', views.EmailAnalytics.as_view(), name='manage_email_analytics'),
     path('enquiries/', views.EnquiryManager.as_view(), name='manage_enquiries'),
+    path('enquiries/export/', views.EnquiryCSVExport.as_view(), name='manage_enquiries_export'),
     path('enquiries/<int:pk>/', views.EnquiryDetail.as_view(), name='manage_enquiry_detail'),
     path('enquiries/<int:pk>/status/', views.EnquiryStatusUpdate.as_view(), name='manage_enquiry_status'),
     path('settings/', views.SiteSettingsView.as_view(), name='manage_settings'),

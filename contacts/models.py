@@ -3,10 +3,9 @@ from django.db import models
 
 class Enquiry(models.Model):
     class Status(models.TextChoices):
-        NEW      = 'new',      'New'
-        READ     = 'read',     'Read'
-        REPLIED  = 'replied',  'Replied'
-        ARCHIVED = 'archived', 'Archived'
+        NEW         = 'new',         'New'
+        IN_PROGRESS = 'in_progress', 'In Progress'
+        RESOLVED    = 'resolved',    'Resolved'
 
     name       = models.CharField(max_length=100)
     email      = models.EmailField()
@@ -14,7 +13,7 @@ class Enquiry(models.Model):
     service    = models.ForeignKey('services.Service', null=True, blank=True,
                      on_delete=models.SET_NULL, related_name='enquiries')
     message    = models.TextField()
-    status     = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    status     = models.CharField(max_length=15, choices=Status.choices, default=Status.NEW)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

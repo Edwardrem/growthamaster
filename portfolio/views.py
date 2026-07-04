@@ -9,7 +9,10 @@ class PortfolioView(View):
 
     def get(self, request):
         items = PortfolioItem.objects.filter(is_active=True)
-        return render(request, self.template_name, {'items': items})
+        return render(request, self.template_name, {
+            'items': items,
+            'categories': PortfolioItem.Category.choices,
+        })
 
 
 class PortfolioFilterPartial(View):

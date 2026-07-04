@@ -10,13 +10,23 @@
   <!-- Dot pattern overlay -->
   <div class="absolute inset-0 opacity-10"
        style="background-image: radial-gradient(#F35236 1px, transparent 1px); background-size: 24px 24px;"></div>
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 text-center">
-    <p class="text-brand-red font-semibold text-sm uppercase tracking-widest mb-4">GrowthMaster Solutions Consultancy</p>
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-      {{ site_settings.hero_heading|default:"Empowering Business Success" }}
-    </h1>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 text-center">
+    <p class="text-brand-muted font-semibold text-sm uppercase tracking-widest mb-4">GrowthMaster Solutions Consultancy — Empowering Business Success</p>
+    {% if site_settings.hero_heading %}
+      <h1 class="heading-display text-5xl sm:text-6xl lg:text-7xl text-white mb-6">
+        {{ site_settings.hero_heading }}
+      </h1>
+    {% else %}
+      <h1 class="heading-display text-5xl sm:text-6xl lg:text-7xl mb-6">
+        <span class="block text-white">Expert Growth</span>
+        <span class="block text-brand-red">Solutions</span>
+      </h1>
+    {% endif %}
+    <div class="max-w-xl mx-auto border-t border-b border-white/40 py-3 mb-6">
+      <p class="heading-display text-white text-lg sm:text-xl">Nothing Ventured, Nothing Gained&hellip;</p>
+    </div>
     <p class="text-brand-cream text-lg sm:text-xl max-w-2xl mx-auto mb-10">
-      {{ site_settings.hero_subheading|default:"Strategy, Projects, Research & Funding consultancy for SMEs, NGOs and investors in Zimbabwe and the region." }}
+      {{ site_settings.hero_subheading|default:"Empowering you with smart solutions for sustainable growth — Strategy, Projects, Research & Funding for SMEs, NGOs and investors." }}
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="{% url 'contact' %}" class="btn-primary text-base px-8 py-3">Get a Free Consultation</a>
@@ -30,7 +40,7 @@
 <section class="section-offwhite">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold text-brand-navy mb-3">What We Do</h2>
+      <h2 class="section-pill mb-4">Our Services:</h2>
       <p class="text-brand-muted max-w-xl mx-auto">Expert consultancy across three core disciplines — delivering results that matter.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -59,7 +69,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
       <div>
         <p class="text-brand-red font-semibold text-sm uppercase tracking-widest mb-2">About Us</p>
-        <h2 class="text-3xl font-bold text-brand-navy mb-4">Your Partner in Business Growth</h2>
+        <h2 class="heading-display text-3xl sm:text-4xl text-brand-navy mb-3">Your Partner in Business Growth</h2>
+        <span class="rule-red mb-5"></span>
         <p class="text-gray-600 leading-relaxed mb-6">
           {{ site_settings.about_body|default:"GrowthMaster Solutions Consultancy is a professional business consultancy firm dedicated to empowering businesses, NGOs, and investors across Zimbabwe and the region. We combine strategic thinking with practical execution to deliver measurable results." }}
         </p>
@@ -91,7 +102,7 @@
 <section class="section-offwhite">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold text-brand-navy mb-3">Why Choose GrowthMaster?</h2>
+      <h2 class="section-pill mb-3">Why Choose GrowthMaster?</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {% for item in why_us %}
@@ -123,7 +134,8 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between mb-10">
       <div>
-        <h2 class="text-3xl font-bold text-brand-navy">Our Work</h2>
+        <h2 class="heading-display text-3xl sm:text-4xl text-brand-navy">Our Work</h2>
+        <span class="rule-red mt-2 mb-1"></span>
         <p class="text-brand-muted mt-1">Selected projects and achievements.</p>
       </div>
       <a href="{% url 'portfolio' %}" class="btn-outline-red">View All</a>
@@ -153,7 +165,8 @@
 <!-- CTA banner -->
 <section class="section-navy text-center">
   <div class="max-w-3xl mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-4">Ready to Grow Your Business?</h2>
+    <h2 class="heading-display text-3xl sm:text-4xl mb-2"><span class="text-white">Ready to Grow</span> <span class="text-brand-red">Your Business?</span></h2>
+    <div class="max-w-md mx-auto border-t border-white/40 mb-6"></div>
     <p class="text-brand-cream mb-8">Let's talk about how GrowthMaster can help you achieve your goals. Free initial consultation available.</p>
     <a href="{% url 'contact' %}" class="btn-primary px-10 py-3 text-base">Get In Touch</a>
   </div>

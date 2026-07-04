@@ -25,7 +25,8 @@
       <!-- Body -->
       <div class="lg:col-span-2">
         <p class="text-brand-red font-semibold text-xs uppercase tracking-widest mb-2">{{ service.category.name }}</p>
-        <h1 class="text-3xl font-extrabold text-brand-navy mb-4">{{ service.name }}</h1>
+        <h1 class="heading-display text-3xl sm:text-4xl text-brand-navy mb-2">{{ service.name }}</h1>
+        <span class="rule-red mb-5"></span>
         <p class="text-lg text-gray-600 mb-6">{{ service.short_desc }}</p>
         {% if service.featured_image %}
           <img src="{{ service.featured_image.url }}" alt="{{ service.name }}" class="w-full rounded-xl mb-8 shadow-sm" />

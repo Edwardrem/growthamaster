@@ -18,6 +18,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        display: ['Oswald', 'Inter', 'ui-sans-serif', 'system-ui'],
       },
     },
   },

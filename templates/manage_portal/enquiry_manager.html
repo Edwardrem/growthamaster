@@ -5,6 +5,7 @@
 {% block manage_content %}
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-bold text-brand-navy">Enquiries</h1>
+  <a href="{% url 'manage_enquiries_export' %}{% if status_filter %}?status={{ status_filter }}{% endif %}" class="btn-secondary text-sm">Export CSV</a>
 </div>
 
 <!-- Filter -->

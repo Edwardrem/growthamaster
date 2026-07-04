@@ -51,8 +51,8 @@
           </div>
           <span class="text-xs px-2 py-1 rounded-full
             {% if e.status == 'new' %}bg-brand-red/10 text-brand-red
-            {% elif e.status == 'read' %}bg-blue-100 text-blue-700
-            {% elif e.status == 'replied' %}bg-green-100 text-green-700
+            {% elif e.status == 'in_progress' %}bg-blue-100 text-blue-700
+            {% elif e.status == 'resolved' %}bg-green-100 text-green-700
             {% else %}bg-gray-100 text-gray-500{% endif %}">
             {{ e.get_status_display }}
           </span>

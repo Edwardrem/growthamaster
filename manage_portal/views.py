@@ -178,7 +178,24 @@ class EmailAnalytics(View):
 
     def get(self, request):
         campaigns = Campaign.objects.filter(status=Campaign.Status.SENT).order_by('-sent_at')
-        return render(request, self.template_name, {'campaigns': campaigns})
+        # Chart data: campaigns over time (oldest -> newest), bar heights as % of scale
+        chart_campaigns = list(reversed(campaigns[:12]))
+        max_rate = max(
+            [c.open_rate for c in chart_campaigns] +
+            [c.click_rate for c in chart_campaigns] + [0]
+        )
+        scale = max(10, -(-int(max_rate) // 10) * 10)  # round up to nearest 10, min 10
+        chart_data = [{
+            'campaign': c,
+            'open_h': round(c.open_rate / scale * 100, 1),
+            'click_h': round(c.click_rate / scale * 100, 1),
+        } for c in chart_campaigns]
+        return render(request, self.template_name, {
+            'campaigns': campaigns,
+            'chart_data': chart_data,
+            'chart_scale': scale,
+            'chart_gridlines': [scale, scale * 3 // 4, scale // 2, scale // 4],
+        })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -200,13 +217,34 @@ class EnquiryManager(View):
 
 
 @method_decorator(login_required, name='dispatch')
+class EnquiryCSVExport(View):
+    def get(self, request):
+        qs = Enquiry.objects.select_related('service').order_by('-created_at')
+        status_filter = request.GET.get('status', '')
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="enquiries.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Email', 'Phone', 'Service', 'Status', 'Message', 'Date'])
+        for e in qs:
+            writer.writerow([
+                e.name, e.email, e.phone,
+                e.service.name if e.service else '',
+                e.get_status_display(), e.message,
+                e.created_at.strftime('%Y-%m-%d %H:%M'),
+            ])
+        return response
+
+
+@method_decorator(login_required, name='dispatch')
 class EnquiryDetail(View):
     template_name = 'manage_portal/enquiry_detail.html'
 
     def get(self, request, pk):
         enquiry = get_object_or_404(Enquiry, pk=pk)
         if enquiry.status == Enquiry.Status.NEW:
-            enquiry.status = Enquiry.Status.READ
+            enquiry.status = Enquiry.Status.IN_PROGRESS
             enquiry.save(update_fields=['status'])
         return render(request, self.template_name, {'enquiry': enquiry})
 
