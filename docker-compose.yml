@@ -1,0 +1,29 @@
+services:
+  web:
+    build: .
+    image: growthmaster-web
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist user uploads on the host so they survive image rebuilds
+      - ./media:/app/media
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # The app connects to the Postgres defined in .env (DB_HOST=187.55.227.159).
+  # To run Postgres locally instead, uncomment the service below and set
+  # DB_HOST=db (plus matching DB_NAME/DB_USER/DB_PASSWORD) in your .env.
+  # ---------------------------------------------------------------------------
+  # db:
+  #   image: postgres:18
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+# volumes:
+#   pgdata:

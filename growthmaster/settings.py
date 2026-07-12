@@ -19,6 +19,12 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 if '187.55.227.159' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('187.55.227.159')
 
+# Trusted origins for CSRF-protected POST forms served over the deployment host
+CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS', default=[
+    'http://187.55.227.159:8000',
+    'http://187.55.227.159',
+])
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -104,6 +111,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Static/media storage — WhiteNoise serves compressed, hashed static files
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 
 # Auth
 LOGIN_URL = '/accounts/login/'

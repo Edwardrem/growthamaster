@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Django local artifacts (rebuilt in the image / mounted at runtime)
+staticfiles/
+db.sqlite3
+# User uploads — persisted via a mounted volume, not baked into the image
+media/
+
+# Secrets & env (injected at runtime via env_file, never baked into the image)
+.env
+
+# VCS / tooling
+.git/
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Plans / scratch
+*.log
