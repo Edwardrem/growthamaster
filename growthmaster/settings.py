@@ -15,14 +15,19 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-change-me')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
-# Deployment server — ensure it is always allowed regardless of .env
-if '187.55.227.159' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('187.55.227.159')
+# Deployment host/domain — always allowed regardless of .env
+for _host in ('187.55.227.159', 'growthmastersolutions.com', 'www.growthmastersolutions.com'):
+    if _host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(_host)
 
 # Trusted origins for CSRF-protected POST forms served over the deployment host
 CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS', default=[
     'http://187.55.227.159:8000',
     'http://187.55.227.159',
+    'http://growthmastersolutions.com',
+    'https://growthmastersolutions.com',
+    'http://www.growthmastersolutions.com',
+    'https://www.growthmastersolutions.com',
 ])
 
 INSTALLED_APPS = [
