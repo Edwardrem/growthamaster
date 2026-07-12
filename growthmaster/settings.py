@@ -15,6 +15,9 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-change-me')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+# Deployment server — ensure it is always allowed regardless of .env
+if '187.55.227.159' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('187.55.227.159')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,8 +75,12 @@ WSGI_APPLICATION = 'growthmaster.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST', default='127.0.0.1'),
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
@@ -118,5 +125,11 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='GrowthMaster <noreply@example.com>')
 ADMIN_EMAIL = env('ADMIN_EMAIL', default='')
 BASE_URL = env('BASE_URL', default='http://127.0.0.1:8000')
+
+# Seeded portal accounts (used by the /seed endpoint) — sourced from .env
+SEED_ADMIN_USERNAME = env('ADMIN_USERNAME', default='admin')
+SEED_ADMIN_PASSWORD = env('ADMIN_PASSWORD', default='admin1234')
+SEED_STAFF_USERNAME = env('STAFF_USERNAME', default='staff')
+SEED_STAFF_PASSWORD = env('STAFF_PASSWORD', default='staff1234')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
