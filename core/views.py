@@ -1,8 +1,20 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.http import Http404, HttpResponse
+from django.utils.html import escape
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
 from services.models import ServiceCategory
 from portfolio.models import PortfolioItem
+
+# Users created by /seed. Dev-only credentials — change/remove before production.
+SEED_USERS = [
+    {'username': 'admin', 'email': 'admin@growthmaster.local', 'password': 'admin1234',
+     'is_staff': True, 'is_superuser': True},
+    {'username': 'staff', 'email': 'staff@growthmaster.local', 'password': 'staff1234',
+     'is_staff': True, 'is_superuser': False},
+]
 
 WHY_US = [
     {'icon': 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z', 'title': 'Proven Expertise', 'desc': 'A decade of practical consultancy experience across business, development, and research sectors.'},
@@ -25,6 +37,46 @@ class HomeView(TemplateView):
 
 class AboutView(TemplateView):
     template_name = 'core/about.html'
+
+
+def seed_users(request):
+    """Dev-only endpoint that seeds a set of login users into the database.
+
+    Guarded to DEBUG mode only — creating login-capable accounts (including a
+    superuser) must never be reachable in production. Idempotent: re-running
+    updates the flags/password of existing users rather than duplicating them.
+    """
+    if not settings.DEBUG:
+        raise Http404()
+
+    User = get_user_model()
+    rows = []
+    for spec in SEED_USERS:
+        user, created = User.objects.get_or_create(
+            username=spec['username'],
+            defaults={'email': spec['email']},
+        )
+        user.email = spec['email']
+        user.is_staff = spec['is_staff']
+        user.is_superuser = spec['is_superuser']
+        user.set_password(spec['password'])
+        user.save()
+        rows.append((spec['username'], spec['password'], spec['email'],
+                     'superuser' if spec['is_superuser'] else ('staff' if spec['is_staff'] else 'user'),
+                     'created' if created else 'updated'))
+
+    body = ['<h1>Seeded users</h1>',
+            '<p style="color:#B13921">Dev-only endpoint (active because DEBUG=True). '
+            'Change these credentials before any production use.</p>',
+            '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;font-family:sans-serif">',
+            '<tr><th>Username</th><th>Password</th><th>Email</th><th>Role</th><th>Result</th></tr>']
+    for username, password, email, role, result in rows:
+        body.append(
+            f'<tr><td>{escape(username)}</td><td><code>{escape(password)}</code></td>'
+            f'<td>{escape(email)}</td><td>{role}</td><td>{result}</td></tr>')
+    body.append('</table>')
+    body.append('<p><a href="/manage/">→ Go to the management portal</a></p>')
+    return HttpResponse('\n'.join(body))
 
 
 def custom_404(request, exception):

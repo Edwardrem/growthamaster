@@ -39,7 +39,7 @@
         <td class="px-4 py-3 text-brand-muted"><a href="mailto:{{ e.email }}" class="hover:text-brand-red">{{ e.email }}</a></td>
         <td class="px-4 py-3 text-brand-muted">{{ e.service.name|default:"—" }}</td>
         <td class="px-4 py-3" id="status-{{ e.pk }}">
-          {% include "manage_portal/partials/enquiry_status_badge.html" %}
+          {% include "manage_portal/partials/enquiry_status_badge.html" with enquiry=e %}
         </td>
         <td class="px-4 py-3 text-brand-muted text-xs">{{ e.created_at|date:"d M Y" }}</td>
         <td class="px-4 py-3">

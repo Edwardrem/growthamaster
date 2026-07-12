@@ -76,6 +76,16 @@
   </div>
 </section>
 
+<!-- Detail modal -->
+<div id="portfolio-modal" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4">
+  <button onclick="closePortfolioModal()" class="absolute top-4 right-4 text-white hover:text-brand-red z-10">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+  <div id="portfolio-modal-content" class="max-w-3xl w-full max-h-[90vh] overflow-auto rounded-xl"></div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -91,5 +101,25 @@ function setPortfolioFilter(field, value, btn) {
   btn.classList.add(active, 'text-white');
   btn.classList.remove('text-brand-navy', 'hover:bg-brand-cream');
 }
+
+function openPortfolioModal() {
+  const box = document.getElementById('portfolio-modal');
+  box.classList.remove('hidden');
+  box.classList.add('flex');
+  document.body.classList.add('overflow-hidden');
+}
+function closePortfolioModal() {
+  const box = document.getElementById('portfolio-modal');
+  box.classList.add('hidden');
+  box.classList.remove('flex');
+  document.body.classList.remove('overflow-hidden');
+  document.getElementById('portfolio-modal-content').innerHTML = '';
+}
+document.getElementById('portfolio-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePortfolioModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePortfolioModal();
+});
 </script>
 {% endblock %}

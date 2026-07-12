@@ -40,6 +40,23 @@ class PortfolioItem(models.Model):
     def __str__(self):
         return self.title
 
+    VIDEO_EXTS = ('.mp4', '.webm', '.mov', '.m4v', '.ogg')
+    IMAGE_EXTS = ('.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif')
+
+    def is_video_file(self):
+        return bool(self.media_file) and self.media_file.name.lower().endswith(self.VIDEO_EXTS)
+
+    def is_image_file(self):
+        return bool(self.media_file) and self.media_file.name.lower().endswith(self.IMAGE_EXTS)
+
+    def card_image(self):
+        """Best still image for a grid card: thumbnail, else media_file if it's an image."""
+        if self.thumbnail:
+            return self.thumbnail
+        if self.is_image_file():
+            return self.media_file
+        return None
+
     def get_embed_url(self):
         url = self.media_url
         if 'youtube.com/watch' in url:

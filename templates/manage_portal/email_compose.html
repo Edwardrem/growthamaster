@@ -21,12 +21,13 @@
       <input type="text" name="preview_text" value="{{ preview_text|default:'' }}" class="input-field" placeholder="Short preview shown in email clients…" />
     </div>
     <div>
-      <label class="block text-sm font-semibold text-brand-navy mb-1">Email Body (HTML) *</label>
+      <label class="block text-sm font-semibold text-brand-navy mb-1">Email Body (content only) *</label>
       <textarea name="html_body" rows="16" required class="input-field font-mono text-xs"
-                placeholder="Paste or write HTML content here. HTMX tracking links and unsubscribe links are injected automatically.">{{ html_body|default:'' }}</textarea>
+                placeholder="Write your message content here (headings, paragraphs, links, images). Just the content — no need for a full HTML page.">{{ html_body|default:'' }}</textarea>
     </div>
     <div class="bg-brand-cream rounded-lg p-4 text-xs text-brand-navy space-y-1">
       <p><strong>Note:</strong> This email will be sent to <strong>all active subscribers</strong> immediately on clicking Send.</p>
+      <p>Your content is automatically wrapped in the branded GrowthMaster email layout (navy header with logo, brand colours &amp; footer) — just write the message content.</p>
       <p>Open tracking (1×1 pixel) and link click tracking are injected automatically.</p>
       <p>An unsubscribe link is appended to every email.</p>
     </div>

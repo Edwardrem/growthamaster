@@ -8,6 +8,89 @@
   <h1 class="text-2xl font-bold text-brand-navy mt-2">{{ action }} Portfolio Item</h1>
 </div>
 
+{% if item and item.thumbnail or item.media_file or item.embed_code %}
+<div class="bg-white rounded-xl shadow-sm p-6 max-w-2xl mb-6">
+  <h2 class="text-sm font-semibold text-brand-navy mb-3">Current media <span class="font-normal text-brand-muted">— click to preview</span></h2>
+  <div class="flex flex-wrap gap-4">
+    {% if item.thumbnail %}
+      <figure class="w-40">
+        <img src="{{ item.thumbnail.url }}" alt="Thumbnail"
+             class="w-40 h-28 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-90"
+             onclick="openMediaPreview('image', '{{ item.thumbnail.url }}')" />
+        <figcaption class="text-xs text-brand-muted mt-1">Thumbnail</figcaption>
+      </figure>
+    {% endif %}
+    {% if item.media_file %}
+      <figure class="w-40">
+        {% if item.is_video_file %}
+          <div class="relative w-40 h-28 rounded-lg border border-gray-200 bg-brand-navy flex items-center justify-center cursor-pointer hover:opacity-90"
+               onclick="openMediaPreview('video', '{{ item.media_file.url }}')">
+            <svg class="w-10 h-10 text-brand-red" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        {% elif item.is_image_file %}
+          <img src="{{ item.media_file.url }}" alt="Media file"
+               class="w-40 h-28 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-90"
+               onclick="openMediaPreview('image', '{{ item.media_file.url }}')" />
+        {% else %}
+          <a href="{{ item.media_file.url }}" target="_blank"
+             class="w-40 h-28 rounded-lg border border-gray-200 bg-brand-cream flex items-center justify-center text-xs text-brand-navy hover:underline">
+            Open file
+          </a>
+        {% endif %}
+        <figcaption class="text-xs text-brand-muted mt-1 truncate">{{ item.media_file.name|cut:"portfolio/files/" }}</figcaption>
+      </figure>
+    {% endif %}
+    {% if item.media_url %}
+      <figure class="w-40">
+        <a href="{{ item.media_url }}" target="_blank"
+           class="w-40 h-28 rounded-lg border border-gray-200 bg-brand-offwhite flex items-center justify-center text-center px-2 text-xs text-brand-navy hover:underline break-all">
+          {{ item.media_url }}
+        </a>
+        <figcaption class="text-xs text-brand-muted mt-1">External URL</figcaption>
+      </figure>
+    {% endif %}
+    {% if item.embed_code %}
+      <div class="w-full p-3 rounded-lg border border-gray-200 bg-brand-offwhite overflow-hidden">{{ item.embed_code|safe }}</div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Media preview modal -->
+<div id="media-preview" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4">
+  <button type="button" onclick="closeMediaPreview()" class="absolute top-4 right-4 text-white hover:text-brand-red">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+  <div id="media-preview-content" class="max-w-4xl w-full max-h-[85vh] overflow-auto flex items-center justify-center"></div>
+</div>
+<script>
+function openMediaPreview(type, src) {
+  const box = document.getElementById('media-preview');
+  const content = document.getElementById('media-preview-content');
+  if (type === 'video') {
+    content.innerHTML = '<video controls autoplay playsinline class="max-w-full max-h-[85vh] rounded-lg"><source src="' + src + '"></video>';
+  } else {
+    content.innerHTML = '<img src="' + src + '" class="max-w-full max-h-[85vh] object-contain rounded-lg" />';
+  }
+  box.classList.remove('hidden');
+  box.classList.add('flex');
+}
+function closeMediaPreview() {
+  const box = document.getElementById('media-preview');
+  box.classList.add('hidden');
+  box.classList.remove('flex');
+  document.getElementById('media-preview-content').innerHTML = '';
+}
+document.getElementById('media-preview').addEventListener('click', function(e) {
+  if (e.target === this) closeMediaPreview();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMediaPreview();
+});
+</script>
+{% endif %}
+
 <div class="bg-white rounded-xl shadow-sm p-8 max-w-2xl">
   <form method="post" enctype="multipart/form-data" class="space-y-5">
     {% csrf_token %}

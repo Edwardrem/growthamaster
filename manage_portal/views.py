@@ -1,17 +1,20 @@
 import csv
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.defaultfilters import linebreaks
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.utils.html import escape
 from django.views import View
 from django.core.paginator import Paginator
 
 from contacts.models import Enquiry
+from core.emails import render_branded_email
 from core.models import SiteSettings
 from email_broadcast.models import Campaign
 from portfolio.models import PortfolioItem
@@ -258,6 +261,58 @@ class EnquiryStatusUpdate(View):
             enquiry.status = new_status
             enquiry.save(update_fields=['status'])
         return render(request, 'manage_portal/partials/enquiry_status_badge.html', {'enquiry': enquiry})
+
+
+@method_decorator(login_required, name='dispatch')
+class EnquiryReply(View):
+    """Send a branded reply email to an enquiry directly from the dashboard."""
+    template_name = 'manage_portal/enquiry_detail.html'
+
+    def post(self, request, pk):
+        enquiry = get_object_or_404(Enquiry, pk=pk)
+        subject = request.POST.get('subject', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        if not subject or not message:
+            return render(request, self.template_name, {
+                'enquiry': enquiry,
+                'reply_error': 'Subject and message are required.',
+                'reply_subject': subject, 'reply_message': message,
+            })
+
+        # Build branded HTML: greeting + the admin's message (newlines -> HTML).
+        content_html = (
+            f'<p>Hi {escape(enquiry.name)},</p>'
+            f'{linebreaks(message)}'
+        )
+        html_body = render_branded_email(content_html, subject=subject, preview_text=subject)
+
+        site = SiteSettings.load()
+        reply_to = [site.contact_email] if site.contact_email else None
+        msg = EmailMultiAlternatives(
+            subject=subject,
+            body=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[enquiry.email],
+            reply_to=reply_to,
+        )
+        msg.attach_alternative(html_body, 'text/html')
+        try:
+            msg.send()
+        except Exception as exc:
+            return render(request, self.template_name, {
+                'enquiry': enquiry,
+                'reply_error': f'Failed to send: {exc}',
+                'reply_subject': subject, 'reply_message': message,
+            })
+
+        if enquiry.status != Enquiry.Status.RESOLVED:
+            enquiry.status = Enquiry.Status.RESOLVED
+            enquiry.save(update_fields=['status'])
+        return render(request, self.template_name, {
+            'enquiry': enquiry,
+            'reply_success': f'Reply sent to {enquiry.email}.',
+        })
 
 
 @method_decorator(login_required, name='dispatch')

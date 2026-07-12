@@ -14,9 +14,32 @@
       <p class="text-brand-muted text-xs uppercase tracking-wide mb-1">Message</p>
       <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ enquiry.message }}</p>
     </div>
-    <div class="flex gap-4">
-      <a href="mailto:{{ enquiry.email }}?subject=Re: Your enquiry to GrowthMaster Solutions"
-         class="btn-primary text-sm">Reply via Email</a>
+
+    {% if reply_success %}
+    <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm mb-4">{{ reply_success }}</div>
+    {% endif %}
+    {% if reply_error %}
+    <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm mb-4">{{ reply_error }}</div>
+    {% endif %}
+
+    <div>
+      <p class="text-brand-muted text-xs uppercase tracking-wide mb-2">Reply via Email</p>
+      <form method="post" action="{% url 'manage_enquiry_reply' enquiry.pk %}" class="space-y-3">
+        {% csrf_token %}
+        <div>
+          <label class="block text-xs font-semibold text-brand-navy mb-1">Subject</label>
+          <input type="text" name="subject" required class="input-field text-sm"
+                 value="{{ reply_subject|default:'Re: Your enquiry to GrowthMaster Solutions' }}" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-brand-navy mb-1">Message</label>
+          <textarea name="message" rows="7" required class="input-field text-sm"
+                    placeholder="Write your reply to {{ enquiry.name }}…">{{ reply_message|default:'' }}</textarea>
+        </div>
+        <p class="text-xs text-brand-muted">Sent from {{ site_settings.contact_email|default:"the site" }} in the branded GrowthMaster email layout. Marks this enquiry as resolved.</p>
+        <button type="submit" class="btn-primary text-sm"
+                onclick="return confirm('Send this reply to {{ enquiry.email }}?')">Send Reply</button>
+      </form>
     </div>
   </div>
   <div class="space-y-4">

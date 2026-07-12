@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from .models import PortfolioItem
@@ -36,3 +36,9 @@ class PortfolioFilterPartial(View):
             'media_type': media_type,
             'category': category,
         })
+
+
+class PortfolioDetailPartial(View):
+    def get(self, request, pk):
+        item = get_object_or_404(PortfolioItem, pk=pk, is_active=True)
+        return render(request, 'portfolio/partials/detail.html', {'item': item})

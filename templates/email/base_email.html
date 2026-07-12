@@ -1,0 +1,92 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{{ subject }}</title>
+  <style>
+    body { margin:0; padding:0; background-color:#FDF8F4; }
+    a { color:#F35236; }
+    .email-content a { color:#B13921; }
+    @media only screen and (max-width:600px) {
+      .container { width:100% !important; }
+      .px { padding-left:24px !important; padding-right:24px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#FDF8F4; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+  <!-- Preheader (hidden preview text) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#FDF8F4;">
+    {{ preview_text }}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FDF8F4;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(16,34,46,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td align="center" style="background-color:#10222E; padding:28px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  {% if logo_url %}
+                  <td style="padding-right:10px; vertical-align:middle;">
+                    <img src="{{ logo_url }}" width="36" height="36" alt="" style="display:block; border:0; border-radius:6px;" />
+                  </td>
+                  {% endif %}
+                  <td style="vertical-align:middle;">
+                    <span style="font-family:'Oswald',Arial,sans-serif; font-size:26px; font-weight:700; letter-spacing:0.5px; color:#ffffff;">Growth<span style="color:#F35236;">Master</span></span>
+                  </td>
+                </tr>
+              </table>
+              <div style="font-family:Arial,sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#FFF3D9; margin-top:8px;">Solutions Consultancy</div>
+            </td>
+          </tr>
+
+          <!-- Accent bar -->
+          <tr><td style="height:4px; background-color:#F35236; line-height:4px; font-size:0;">&nbsp;</td></tr>
+
+          <!-- Body -->
+          <tr>
+            <td class="px email-content" style="padding:36px 40px; font-family:'Inter',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.65; color:#10222E;">
+              {{ content|safe }}
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="px" style="background-color:#10222E; padding:28px 40px; font-family:'Inter',Helvetica,Arial,sans-serif;">
+              <div style="font-family:'Oswald',Arial,sans-serif; font-size:18px; font-weight:700; color:#ffffff;">Growth<span style="color:#F35236;">Master</span></div>
+              <div style="font-size:13px; color:#FFF3D9; margin:4px 0 12px;">{{ site.tagline|default:"Empowering Business Success" }}</div>
+
+              <div style="font-size:12px; line-height:1.7; color:#B9C9C9;">
+                {% if site.contact_email %}<a href="mailto:{{ site.contact_email }}" style="color:#B9C9C9; text-decoration:none;">{{ site.contact_email }}</a><br />{% endif %}
+                {% if site.phone %}<a href="tel:{{ site.phone }}" style="color:#B9C9C9; text-decoration:none;">{{ site.phone }}</a><br />{% endif %}
+                {% if site.physical_address %}<span>{{ site.physical_address|linebreaksbr }}</span>{% endif %}
+              </div>
+
+              {% if site.linkedin_url or site.facebook_url or site.instagram_url or site.twitter_url %}
+              <div style="font-size:12px; color:#B9C9C9; margin-top:14px;">
+                {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" style="color:#F35236; text-decoration:none;">LinkedIn</a>&nbsp;&nbsp;{% endif %}
+                {% if site.facebook_url %}<a href="{{ site.facebook_url }}" style="color:#F35236; text-decoration:none;">Facebook</a>&nbsp;&nbsp;{% endif %}
+                {% if site.instagram_url %}<a href="{{ site.instagram_url }}" style="color:#F35236; text-decoration:none;">Instagram</a>&nbsp;&nbsp;{% endif %}
+                {% if site.twitter_url %}<a href="{{ site.twitter_url }}" style="color:#F35236; text-decoration:none;">X</a>{% endif %}
+              </div>
+              {% endif %}
+
+              <div style="border-top:1px solid rgba(255,255,255,0.12); margin-top:18px; padding-top:14px; font-size:11px; color:#8697a0;">
+                &copy; {{ year }} GrowthMaster Solutions Consultancy. All rights reserved.
+                {% if unsub_url %}<br /><a href="{{ unsub_url }}" style="color:#8697a0; text-decoration:underline;">Unsubscribe</a> from these emails.{% endif %}
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+  {% if pixel %}{{ pixel|safe }}{% endif %}
+</body>
+</html>

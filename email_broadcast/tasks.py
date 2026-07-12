@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.utils import timezone
 
+from core.emails import render_branded_email
 from subscribers.models import Subscriber
 from .models import Campaign, CampaignLink, CampaignRecipient
 
@@ -44,6 +45,16 @@ def send_campaign(campaign_id):
 
     html_with_links = _rewrite_links(campaign.html_body, campaign, base_url)
 
+    # Wrap the admin's content in the branded website-styled email layout once,
+    # using placeholders for the per-recipient pixel and unsubscribe link.
+    shell_html = render_branded_email(
+        html_with_links,
+        subject=campaign.subject,
+        preview_text=campaign.preview_text,
+        unsub_url='__UNSUB_URL__',
+        pixel='__PIXEL__',
+    )
+
     messages = []
     recipients = []
     for sub in subscribers:
@@ -56,12 +67,7 @@ def send_campaign(campaign_id):
         recipients.append(cr)
         pixel = f'<img src="{base_url}/email/open/{cr.pixel_token}.gif" width="1" height="1" alt="" />'
         unsub_link = f'{base_url}/subscribers/unsubscribe/{sub.token}/'
-        personal_html = (
-            html_with_links
-            + pixel
-            + f'<p style="font-size:11px;color:#888;margin-top:24px;">'
-            f'<a href="{unsub_link}">Unsubscribe</a></p>'
-        )
+        personal_html = shell_html.replace('__PIXEL__', pixel).replace('__UNSUB_URL__', unsub_link)
         text_body = campaign.text_body or ''
         msg = EmailMultiAlternatives(
             subject=campaign.subject,

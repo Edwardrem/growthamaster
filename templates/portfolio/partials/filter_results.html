@@ -1,10 +1,13 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {% for item in items %}
-  <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+  <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+       hx-get="{% url 'portfolio_detail' item.pk %}"
+       hx-target="#portfolio-modal-content"
+       hx-swap="innerHTML"
+       onclick="openPortfolioModal()">
     {% if item.media_type == 'video' %}
       {% if item.thumbnail %}
-        <div class="relative cursor-pointer group"
-             onclick="openLightbox('{{ item.get_embed_url }}', 'video')">
+        <div class="relative group">
           <img src="{{ item.thumbnail.url }}" alt="{{ item.alt_text|default:item.title }}"
                class="w-full h-48 object-cover" />
           <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/50 transition-colors">
@@ -14,20 +17,14 @@
           </div>
         </div>
       {% else %}
-        <div class="w-full h-48 bg-brand-navy flex items-center justify-center cursor-pointer"
-             onclick="openLightbox('{{ item.get_embed_url }}', 'video')">
+        <div class="w-full h-48 bg-brand-navy flex items-center justify-center">
           <svg class="w-14 h-14 text-brand-red" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
       {% endif %}
     {% elif item.media_type == 'photo' %}
-      {% if item.media_file %}
-        <img src="{{ item.media_file.url }}" alt="{{ item.alt_text|default:item.title }}"
-             class="w-full h-48 object-cover cursor-pointer"
-             onclick="openLightbox('{{ item.media_file.url }}', 'photo')" />
-      {% elif item.thumbnail %}
-        <img src="{{ item.thumbnail.url }}" alt="{{ item.alt_text|default:item.title }}"
-             class="w-full h-48 object-cover cursor-pointer"
-             onclick="openLightbox('{{ item.thumbnail.url }}', 'photo')" />
+      {% if item.card_image %}
+        <img src="{{ item.card_image.url }}" alt="{{ item.alt_text|default:item.title }}"
+             class="w-full h-48 object-cover" />
       {% else %}
         <div class="w-full h-48 bg-brand-cream flex items-center justify-center">
           <svg class="w-10 h-10 text-brand-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +33,7 @@
         </div>
       {% endif %}
     {% else %}{# social #}
-      <div class="p-4 bg-brand-offwhite min-h-[12rem] overflow-hidden">
+      <div class="p-4 bg-brand-offwhite min-h-[12rem] overflow-hidden pointer-events-none">
         {% if item.embed_code %}
           {{ item.embed_code|safe }}
         {% else %}
@@ -82,35 +79,3 @@
   </div>
 </div>
 {% endif %}
-
-<!-- Lightbox -->
-<div id="lightbox" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4">
-  <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-brand-red">
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-    </svg>
-  </button>
-  <div id="lightbox-content" class="max-w-4xl w-full max-h-[85vh] overflow-auto"></div>
-</div>
-<script>
-function openLightbox(src, type) {
-  const box = document.getElementById('lightbox');
-  const content = document.getElementById('lightbox-content');
-  box.classList.remove('hidden');
-  box.classList.add('flex');
-  if (type === 'video') {
-    content.innerHTML = '<div class="relative" style="padding-bottom:56.25%"><iframe src="' + src + '?autoplay=1" class="absolute inset-0 w-full h-full rounded-lg" allowfullscreen></iframe></div>';
-  } else {
-    content.innerHTML = '<img src="' + src + '" class="max-w-full max-h-[85vh] object-contain rounded-lg mx-auto" />';
-  }
-}
-function closeLightbox() {
-  const box = document.getElementById('lightbox');
-  box.classList.add('hidden');
-  box.classList.remove('flex');
-  document.getElementById('lightbox-content').innerHTML = '';
-}
-document.getElementById('lightbox').addEventListener('click', function(e) {
-  if (e.target === this) closeLightbox();
-});
-</script>
