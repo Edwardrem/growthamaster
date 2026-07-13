@@ -3,3 +3,10 @@ Allow: /
 Disallow: /manage/
 Disallow: /admin/
 Disallow: /accounts/
+Disallow: /seed/
+Disallow: /subscribers/
+Disallow: /email/
+Disallow: /services/category/
+Disallow: /portfolio/filter/
+
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml
