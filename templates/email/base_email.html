@@ -63,7 +63,8 @@
 
               <div style="font-size:12px; line-height:1.7; color:#B9C9C9;">
                 {% if site.contact_email %}<a href="mailto:{{ site.contact_email }}" style="color:#B9C9C9; text-decoration:none;">{{ site.contact_email }}</a><br />{% endif %}
-                {% if site.phone %}<a href="tel:{{ site.phone }}" style="color:#B9C9C9; text-decoration:none;">{{ site.phone }}</a><br />{% endif %}
+                {% if site.contact_email_secondary %}<a href="mailto:{{ site.contact_email_secondary }}" style="color:#B9C9C9; text-decoration:none;">{{ site.contact_email_secondary }}</a><br />{% endif %}
+                {% if site.phone %}<span>{{ site.phone }}</span><br />{% endif %}
                 {% if site.physical_address %}<span>{{ site.physical_address|linebreaksbr }}</span>{% endif %}
               </div>
 

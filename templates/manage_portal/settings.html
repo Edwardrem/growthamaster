@@ -44,7 +44,7 @@
 
     <h2 class="font-bold text-brand-navy border-b pb-2 pt-2">Contact & WhatsApp</h2>
     {% for field in form %}
-      {% if field.name in "contact_email,phone,physical_address,whatsapp_number" %}
+      {% if field.name in "contact_email,contact_email_secondary,phone,physical_address,whatsapp_number" %}
       <div>
         <label class="block text-sm font-semibold text-brand-navy mb-1">{{ field.label }}</label>
         {{ field }}

@@ -7,7 +7,8 @@ class SiteSettings(models.Model):
     whatsapp_number  = models.CharField(max_length=25, blank=True,
                            help_text='E.164 format, e.g. +263771234567')
     contact_email    = models.EmailField(blank=True)
-    phone            = models.CharField(max_length=30, blank=True)
+    contact_email_secondary = models.EmailField(blank=True)
+    phone            = models.CharField(max_length=60, blank=True)
     physical_address = models.TextField(blank=True)
     facebook_url     = models.URLField(blank=True)
     instagram_url    = models.URLField(blank=True)
@@ -16,7 +17,7 @@ class SiteSettings(models.Model):
     hero_heading     = models.CharField(max_length=200, blank=True,
                            default='Empowering Business Success')
     hero_subheading  = models.TextField(blank=True,
-                           default='Strategy, Projects, Research & Funding consultancy for SMEs, NGOs and investors in Zimbabwe and the region.')
+                           default='Strategy, Projects, Research & Funding consultancy for SMEs, NGOs and investors across Africa.')
     about_body       = models.TextField(blank=True)
     logo             = models.ImageField(upload_to='site/', blank=True)
     favicon          = models.ImageField(upload_to='site/', blank=True)

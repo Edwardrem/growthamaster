@@ -41,9 +41,9 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
       <h2 class="section-pill mb-4">Our Services:</h2>
-      <p class="text-brand-muted max-w-xl mx-auto">Expert consultancy across three core disciplines — delivering results that matter.</p>
+      <p class="text-brand-muted max-w-xl mx-auto">Expert consultancy across five core disciplines — delivering results that matter.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for cat in categories %}
       <div class="card-cream hover:shadow-md transition-shadow">
         <div class="w-12 h-12 bg-brand-red/10 rounded-lg flex items-center justify-center mb-4">
@@ -72,7 +72,7 @@
         <h2 class="heading-display text-3xl sm:text-4xl text-brand-navy mb-3">Your Partner in Business Growth</h2>
         <span class="rule-red mb-5"></span>
         <p class="text-gray-600 leading-relaxed mb-6">
-          {{ site_settings.about_body|default:"GrowthMaster Solutions Consultancy is a professional business consultancy firm dedicated to empowering businesses, NGOs, and investors across Zimbabwe and the region. We combine strategic thinking with practical execution to deliver measurable results." }}
+          {{ site_settings.about_body|default:"GrowthMaster Solutions Consultancy is a professional business consultancy firm dedicated to empowering businesses, NGOs, and investors across Africa. We combine strategic thinking with practical execution to deliver measurable results." }}
         </p>
         <a href="{% url 'about' %}" class="btn-primary">Learn More About Us</a>
       </div>
@@ -86,7 +86,7 @@
           <p class="text-brand-muted text-sm">Clients Served</p>
         </div>
         <div class="bg-brand-cream rounded-xl p-6 text-center">
-          <p class="text-4xl font-extrabold text-brand-navy mb-1">3</p>
+          <p class="text-4xl font-extrabold text-brand-navy mb-1">5</p>
           <p class="text-brand-muted text-sm">Service Pillars</p>
         </div>
         <div class="bg-brand-navy rounded-xl p-6 text-white text-center">
